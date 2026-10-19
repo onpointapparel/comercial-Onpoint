@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Onpoint Master — Management & Production System</title>
+<style>
+:root{--nav:#111b2e;--blue:#2563eb;--bg:#f4f7fb;--line:#e6ebf2;--muted:#718096;--ink:#182230}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.45 Inter,system-ui,Arial;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}
+.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}.side{background:var(--nav);color:#dbe5f5;padding:22px 14px;display:flex;flex-direction:column;gap:25px}.brand{display:flex;gap:10px;align-items:center;padding:0 8px}.mark{background:linear-gradient(140deg,#60a5fa,#2563eb);color:#fff;font-weight:900;border-radius:12px;padding:10px 13px}.brand b{display:block;color:white}.brand small{color:#93a5c2;font-size:11px}.label{font-size:10px;letter-spacing:1.2px;color:#7e91b0;padding:0 12px;margin-bottom:8px;font-weight:800}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#b5c2d6;text-align:left;padding:11px 12px;border-radius:9px}.nav button:hover,.nav button.active{background:#243a5c;color:white}.nav button.active{box-shadow:inset 3px 0 #60a5fa}.admin{margin-top:auto;border-top:1px solid #ffffff20;padding:15px 8px;font-size:12px}.admin small{display:block;color:#91a2bd}
+main{min-width:0}.top{height:68px;background:white;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 30px}.env{font-size:10px;font-weight:800;color:#1d4ed8;background:#edf4ff;border:1px solid #cfe0ff;border-radius:18px;padding:6px 10px}.content{max-width:1450px;margin:auto;padding:28px 30px}.head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:22px}.eyebrow{color:#3974d9;font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase}.head h1{font-size:27px;margin:5px 0;letter-spacing:-.7px}.head p{color:var(--muted);margin:0;font-size:13px}.btn{border:1px solid var(--line);border-radius:9px;padding:10px 13px;background:white;font-weight:700;color:#344054}.btn.primary{background:var(--blue);border-color:var(--blue);color:white}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}.card{background:white;border:1px solid var(--line);border-radius:15px;box-shadow:0 8px 28px #15223808;overflow:hidden}.stat{padding:18px}.stat label{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:29px;margin:9px 0 2px}.stat small{color:var(--muted);font-size:11px}.cols{grid-template-columns:1.4fr 1fr}.cardhead{padding:18px 19px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center}.cardhead h2{font-size:15px;margin:0}.cardhead p{font-size:11px;color:var(--muted);margin:4px 0 0}.link{border:0;background:none;color:var(--blue);font-weight:800;font-size:12px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;background:#fafbfd;border-block:1px solid var(--line);padding:11px 18px;color:#8290a5;font-size:10px;text-transform:uppercase;letter-spacing:.6px}td{padding:13px 18px;border-bottom:1px solid #f0f2f6;font-size:12px}tr:last-child td{border-bottom:0}.pill{font-size:10px;font-weight:800;padding:5px 8px;border-radius:20px}.green{background:#eaf8ef;color:#15803d}.yellow{background:#fff5db;color:#a16207}.red{background:#feecec;color:#b91c1c}.activity{padding:0 19px 12px}.act{padding:13px 0;border-bottom:1px solid #f0f2f6;font-size:12px}.act:last-child{border:0}.act small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.section{display:none}.section.active{display:block}.notice{padding:12px 14px;border:1px solid #d9e8ff;background:#f2f7ff;color:#365783;border-radius:11px;font-size:12px;margin-bottom:16px}.filters{display:flex;gap:9px;padding:0 18px 14px}.field{border:1px solid #dfe5ee;border-radius:8px;padding:10px 11px;outline:none;background:white;color:#344054}.field:focus{border-color:#75a5f8;box-shadow:0 0 0 3px #dceaff}.search{flex:1;min-width:180px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:20px}.group label{display:block;font-size:11px;font-weight:800;color:#59677c;margin-bottom:6px}.group input,.group select{width:100%}.group small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.formsection{border-top:1px solid var(--line);padding:18px 20px}.formsection h3{font-size:13px;margin:0 0 4px}.formsection p{font-size:12px;color:var(--muted);margin:0}.actions{border-top:1px solid var(--line);padding:15px 20px;display:flex;justify-content:flex-end;gap:8px}.mini{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:15px}.mini .card{padding:18px}.mini b{display:block;margin:8px 0 4px}.mini p{color:var(--muted);font-size:12px;margin:0}.toast{position:fixed;right:20px;bottom:20px;background:#142238;color:white;border-radius:10px;padding:12px 16px;opacity:0;transition:.2s;pointer-events:none}.toast.show{opacity:1}
+
+.modal-backdrop{position:fixed;inset:0;background:#10182888;display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+.modal-backdrop.open{display:flex}.modal{width:min(720px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:16px;box-shadow:0 24px 80px #0003}
+.modalhead{display:flex;justify-content:space-between;align-items:flex-start;padding:20px;border-bottom:1px solid var(--line)}
+.modalhead h2{margin:0;font-size:18px}.modalhead p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.iconbtn{border:1px solid var(--line);background:white;border-radius:8px;padding:7px 10px}
+.modalbody{padding:18px 20px}.modalfoot{display:flex;justify-content:flex-end;gap:8px;padding:15px 20px;border-top:1px solid var(--line)}
+.detailgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.detailitem{padding:13px;border:1px solid var(--line);border-radius:10px;min-width:0}
+.detailitem small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.detailitem b{overflow-wrap:anywhere}
+@media(max-width:600px){.detailgrid{grid-template-columns:1fr}.modalfoot{flex-wrap:wrap}}
+
+@media(max-width:900px){.app{grid-template-columns:190px 1fr}.stats{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.content{padding:22px 16px}.top{padding:0 16px}}@media(max-width:620px){.app{grid-template-columns:1fr}.side{padding:12px;gap:12px}.label,.admin{display:none}.nav{grid-template-columns:repeat(4,1fr)}.nav button{text-align:center;font-size:10px;padding:8px 3px}.content{padding:18px 12px}.head{flex-direction:column}.head h1{font-size:23px}.formgrid,.mini{grid-template-columns:1fr}.top{height:56px}}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body>
+
+<div id="loginGate" style="position:fixed;inset:0;z-index:9999;background:rgba(244,247,251,.97);display:flex;align-items:center;justify-content:center;padding:20px">
+ <div class="card" style="width:min(440px,100%);padding:28px">
+  <div class="brand" style="padding:0;margin-bottom:22px"><div class="mark">O</div><div><b style="color:var(--ink)">ONPOINT MASTER</b><small style="color:var(--muted)">Platform Control Center</small></div></div>
+  <div class="eyebrow">Akses administrator</div><h1 style="font-size:25px;margin:6px 0 8px">Masuk ke Onpoint Master</h1>
+  <p style="color:var(--muted);margin:0 0 20px">Gunakan akun Supabase yang sudah terdaftar sebagai Platform Admin.</p>
+  <form id="loginForm">
+   <div class="group" style="margin-bottom:13px"><label>Email</label><input class="field" id="loginEmail" type="email" autocomplete="username" required placeholder="admin@email.com" style="width:100%"></div>
+   <div class="group" style="margin-bottom:16px"><label>Password</label><input class="field" id="loginPassword" type="password" autocomplete="current-password" required placeholder="Password Supabase" style="width:100%"></div>
+   <button class="btn primary" id="loginSubmit" type="submit" style="width:100%">Masuk</button>
+   <p id="loginMessage" style="font-size:12px;color:#b42318;margin:12px 0 0"></p>
+  </form>
+  <p style="font-size:11px;color:var(--muted);margin:18px 0 0">Kunci publishable digunakan di browser. Service-role key tidak boleh dimasukkan ke HTML.</p>
+ </div>
+</div>
+
+<div class="app"><aside class="side"><div class="brand"><div class="mark">O</div><div><b>ONPOINT MASTER</b><small>Platform Control Center</small></div></div>
+<div><div class="label">PLATFORM</div><nav class="nav">
+<button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button><button data-page="tenants">♙ &nbsp; Customer / Tenant</button><button data-page="customize">◈ &nbsp; App Customizer</button><button data-page="plans">▤ &nbsp; Paket & Langganan</button><button data-page="access">♧ &nbsp; User & Akses</button><button data-page="audit">◷ &nbsp; Audit Aktivitas</button><button data-page="settings">⚙ &nbsp; Pengaturan Platform</button>
+</nav></div><div class="admin">◉ &nbsp; Platform Admin<small id="adminIdentity">Login diperlukan</small></div></aside>
+<main><header class="top"><div>Onpoint Master / <b id="crumb">Dashboard</b></div><div style="display:flex;align-items:center;gap:10px"><span class="env" id="connectionBadge">SUPABASE</span><span id="signedInEmail" style="font-size:12px;color:var(--muted)"></span><button class="btn" id="logoutBtn" onclick="logout()" style="display:none;padding:7px 10px">Keluar</button></div></header><div class="content">
+<section class="section active" id="page-dashboard"><div class="head"><div><div class="eyebrow">Overview platform</div><h1>Dashboard Master</h1><p>Pantau tenant, konfigurasi, dan kondisi platform dari satu tempat.</p></div><button class="btn primary" onclick="go('tenants')">＋ Tambah customer</button></div>
+<div class="grid stats"><div class="card stat"><label>Total tenant</label><strong id="total">3</strong><small>Seluruh usaha terdaftar</small></div><div class="card stat"><label>Tenant aktif</label><strong id="active">1</strong><small>Akses aplikasi aktif</small></div><div class="card stat"><label>Masa percobaan</label><strong id="trial">1</strong><small>Perlu dipantau</small></div><div class="card stat"><label>Perlu perhatian</label><strong id="paused">1</strong><small>Ditangguhkan / tindak lanjut</small></div></div>
+<div class="grid cols"><div class="card"><div class="cardhead"><div><h2>Customer terbaru</h2><p>Tenant yang dikelola platform</p></div><button class="link" onclick="go('tenants')">Lihat semua →</button></div><div class="tablewrap"><table><thead><tr><th>Usaha</th><th>Paket</th><th>Status</th><th></th></tr></thead><tbody id="recent"></tbody></table></div></div><div class="card"><div class="cardhead"><div><h2>Aktivitas terbaru</h2><p>Contoh riwayat platform</p></div><button class="link" onclick="go('audit')">Audit →</button></div><div class="activity" id="activity"></div></div></div>
+<div class="grid mini"><div class="card"><b>◈ Identitas aplikasi</b><p>Nama usaha, logo, warna, kontak, rekening, dan invoice per tenant.</p></div><div class="card"><b>▤ Paket layanan</b><p>Kelola paket, batas pengguna, batas pesanan, dan status langganan.</p></div><div class="card"><b>♧ Kontrol akses</b><p>Bedakan Platform Admin dengan Owner, CS/Admin, dan Produksi.</p></div></div></section>
+<section class="section" id="page-tenants"><div class="head"><div><div class="eyebrow">Customer management</div><h1>Customer / Tenant</h1><p>Satu tenant mewakili satu usaha dengan konfigurasi dan data terpisah.</p></div><button class="btn primary" onclick="openCreateTenant()">＋ Tambah customer</button></div><div class="notice"><b>Data live Supabase.</b> Daftar tenant, paket, langganan, dan konfigurasi dibaca dari database sesuai hak Platform Admin.</div><div class="card"><div class="cardhead"><div><h2>Daftar tenant</h2><p id="count">3 tenant</p></div></div><div class="filters"><input class="field search" id="search" placeholder="Cari nama usaha, slug, atau email..." oninput="renderTenants()"><select class="field" id="filter" onchange="renderTenants()"><option value="">Semua status</option><option>Aktif</option><option>Trial</option><option>Ditangguhkan</option></select></div><div class="tablewrap"><table><thead><tr><th>Usaha / tenant</th><th>Owner / User ID</th><th>Paket</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="tenants"></tbody></table></div></div></section>
+<section class="section" id="page-customize"><div class="head"><div><div class="eyebrow">White-label configuration</div><h1>App Customizer</h1><p>Sesuaikan identitas aplikasi untuk setiap usaha pelanggan.</p></div></div><div class="notice">Konfigurasi yang tersedia pada skema saat ini disimpan ke Supabase. Nama aplikasi, warna, identitas usaha, alamat, kontak, rekening, dan prefix dokumen disimpan di tenant_settings.</div><div class="card"><div class="formsection"><h3>1. Pilih tenant</h3><p>Konfigurasi setiap tenant harus terpisah.</p></div><div class="formgrid">
+<div class="group"><label>Tenant</label><select class="field" id="ctenant" onchange="loadTenant()"></select></div><div class="group"><label>Nama aplikasi yang tampil</label><input class="field" id="appname" value="ManagementProduksi"></div>
+<div class="group"><label>Nama usaha / brand</label><input class="field" id="bizname" value="ManagementProduksi"></div><div class="group"><label>Slug tenant</label><input class="field" id="slug" value="managementproduksi"><small>Slug bukan pengganti otorisasi tenant.</small></div>
+<div class="group"><label>Alamat toko</label><input class="field" id="address" placeholder="Alamat usaha"></div><div class="group"><label>Nomor WhatsApp</label><input class="field" id="wa" placeholder="08xxxxxxxxxx"></div>
+<div class="group"><label>Nama pemilik rekening</label><input class="field" id="bankowner" placeholder="Nama sesuai rekening"></div><div class="group"><label>Nama bank</label><input class="field" id="bank" placeholder="BCA / BRI / Mandiri"></div>
+<div class="group"><label>Nomor rekening</label><input class="field" id="banknum" placeholder="Nomor rekening"></div><div class="group"><label>Prefix invoice</label><input class="field" id="invoice" value="INV"></div>
+<div class="group"><label>Prefix surat perintah kerja</label><input class="field" id="spk" value="SPK"></div><div class="group"><label>Warna utama</label><select class="field" id="color"><option value="#2563eb">Biru</option><option value="#111827">Hitam</option><option value="#15803d">Hijau</option><option value="#7c3aed">Ungu</option><option value="#be123c">Marun</option></select></div></div>
+<div class="formsection"><h3>2. Pratinjau identitas</h3><p>Pratinjau branding tenant.</p><div style="display:flex;align-items:center;gap:12px;margin-top:13px"><div class="mark" id="previewmark">M</div><div><b id="previewname">ManagementProduksi</b><div id="previewbiz" style="color:var(--muted);font-size:12px">ManagementProduksi · Sistem Manajemen Produksi</div></div></div></div><div class="actions"><button class="btn" onclick="loadTenant()">Batalkan perubahan</button><button class="btn primary" onclick="saveTenant()">Simpan konfigurasi</button></div></div></section>
+<section class="section" id="page-plans"><div class="head"><div><div class="eyebrow">Commercial management</div><h1>Paket & Langganan</h1><p>Rancangan paket dan batas penggunaan tenant.</p></div><button class="btn primary" onclick="toast('Pengelolaan paket aktif saat integrasi Supabase.')">＋ Tambah paket</button></div><div class="notice">Paket dan batas penggunaan dibaca dari tabel subscription_plans. Harga dapat disunting di Supabase sampai menu pengelolaan paket backend dibuat.</div><div class="grid mini" id="plansGrid"></div></section>
+<section class="section" id="page-access"><div class="head"><div><div class="eyebrow">Identity & permissions</div><h1>User & Akses</h1><p>Pisahkan akun platform dan pengguna di dalam tenant.</p></div></div><div class="notice">Platform Admin mengelola layanan SaaS. Owner tenant hanya mengelola usaha dan anggota tenant miliknya.</div><div class="grid mini"><div class="card"><b>♛ Owner</b><p>Pengaturan usaha, tim, order, laporan, dan kontrol operasional.</p></div><div class="card"><b>♧ CS / Admin</b><p>Data pelanggan, pesanan, desain, dan pembayaran sesuai izin.</p></div><div class="card"><b>⚒ Produksi</b><p>Melihat dan memperbarui proses produksi sesuai hak akses.</p></div></div><div class="card" style="margin-top:15px"><div class="cardhead"><div><h2>Prinsip keamanan</h2><p>Harus diterapkan saat integrasi backend</p></div></div><div class="activity"><div class="act">✓ <b>Tenant isolation</b> — query operasional dibatasi identitas tenant dan RLS.</div><div class="act">✓ <b>Admin terpisah</b> — hak platform tidak otomatis diberikan ke Owner.</div><div class="act">✓ <b>Rahasia backend</b> — service-role key tidak boleh berada di HTML/browser.</div></div></div></section>
+<section class="section" id="page-audit"><div class="head"><div><div class="eyebrow">Traceability</div><h1>Audit Aktivitas</h1><p>Contoh tampilan riwayat aktivitas platform.</p></div></div><div class="notice">Dalam versi produksi, log dicatat oleh backend/database dan tidak dapat diedit oleh pengguna biasa.</div><div class="card"><div class="cardhead"><div><h2>Riwayat aktivitas</h2><p>Data demo</p></div><input class="field" id="auditsearch" placeholder="Cari aktivitas..." oninput="renderAudit()"></div><div class="tablewrap"><table><thead><tr><th>Waktu</th><th>Aktor</th><th>Aktivitas</th><th>Objek</th><th>Status</th></tr></thead><tbody id="audittable"></tbody></table></div></div></section>
+<section class="section" id="page-settings"><div class="head"><div><div class="eyebrow">Global configuration</div><h1>Pengaturan Platform</h1><p>Pengaturan global layanan, bukan identitas masing-masing usaha.</p></div></div><div class="notice">Nama brand, logo, rekening, dan invoice disimpan per tenant; pengaturan ini khusus platform.</div><div class="card"><div class="formgrid"><div class="group"><label>Nama platform</label><input class="field" value="Onpoint Management & Production System"></div><div class="group"><label>Nama panel master</label><input class="field" value="Onpoint Master"></div><div class="group"><label>Email dukungan</label><input class="field" placeholder="support@domainanda.com"></div><div class="group"><label>Zona waktu platform</label><select class="field"><option>Asia/Jakarta</option><option>UTC</option></select></div></div><div class="actions"><button class="btn primary" onclick="toast('Pengaturan belum tersimpan ke server.')">Simpan pengaturan demo</button></div></div></section>
+</div></main></div>
+<div class="modal-backdrop" id="createModal" onclick="if(event.target===this)closeModal('createModal')">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+  <div class="modalhead"><div><h2 id="createTitle">Tambah customer / tenant</h2><p>Buat profil usaha untuk menyiapkan ruang kerja aplikasi.</p></div><button class="iconbtn" onclick="closeModal('createModal')">✕</button></div>
+  <form id="createForm" onsubmit="createTenant(event)">
+   <div class="modalbody"><div class="notice">Email pemilik harus sudah terdaftar di Supabase Auth. Form ini membuat tenant, pengaturan awal, membership Owner, dan langganan melalui fungsi database aman. Akun Auth baru/invite belum dibuat otomatis.</div>
+    <div class="formgrid" style="padding:0">
+     <div class="group"><label>Nama usaha / brand *</label><input class="field" id="newName" required maxlength="100" placeholder="Contoh: Konveksi Berkah"></div>
+     <div class="group"><label>Nama pemilik *</label><input class="field" id="newOwner" required maxlength="100" placeholder="Nama pemilik usaha"></div>
+     <div class="group"><label>Email pemilik *</label><input class="field" id="newEmail" type="email" required maxlength="160" placeholder="pemilik@email.com"></div>
+     <div class="group"><label>Nomor WhatsApp</label><input class="field" id="newWa" maxlength="30" placeholder="08xxxxxxxxxx"></div>
+     <div class="group"><label>Paket awal</label><select class="field" id="newPlan"><option>Starter</option><option>Pro</option><option>Business</option></select></div>
+     <div class="group"><label>Status awal</label><select class="field" id="newStatus"><option>Trial</option><option>Aktif</option></select></div>
+    </div>
+   </div>
+   <div class="modalfoot"><button type="button" class="btn" onclick="closeModal('createModal')">Batal</button><button type="submit" class="btn primary">Buat tenant</button></div>
+  </form>
+ </div>
+</div>
+<div class="modal-backdrop" id="detailModal" onclick="if(event.target===this)closeModal('detailModal')">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modalhead"><div><h2 id="detailTitle">Detail tenant</h2><p>Ringkasan customer dan kontrol status.</p></div><button class="iconbtn" onclick="closeModal('detailModal')">✕</button></div>
+  <div class="modalbody"><div class="detailgrid" id="detailGrid"></div>
+   <div class="formsection" style="padding-inline:0"><h3>Kontrol tenant</h3><p>Perubahan status dikirim ke database melalui fungsi admin yang memvalidasi hak Platform Admin.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn" id="statusAction" onclick="toggleTenantStatus()">Ubah status</button><button class="btn" onclick="customizeSelected()">Buka App Customizer</button></div></div>
+   <div class="notice" style="margin:14px 0 0">Akun Owner harus dibuat/diundang melalui Supabase Auth terlebih dahulu. Jangan menaruh service_role key di file HTML.</div>
+  </div>
+  <div class="modalfoot"><button class="btn" onclick="closeModal('detailModal')">Tutup</button></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const SUPABASE_URL = 'https://iddpkoxaeumtnnlrsuyl.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_5xR1hGO7Fcpv4qlinlnzzQ_TemrW0_1';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+let data = [];
+let plans = [];
+let selectedTenantId = null;
+let logs = [];
+let currentUser = null;
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function pill(s){return `<span class="pill ${s==='Aktif'?'green':s==='Trial'?'yellow':'red'}">${esc(s)}</span>`}
+function statusLabel(s){return ({active:'Aktif',pending:'Pending',suspended:'Ditangguhkan',closed:'Ditutup',trial:'Trial',past_due:'Tertunggak',cancelled:'Dibatalkan',expired:'Kedaluwarsa'})[s]||s||'—'}
+function toast(s){let e=document.getElementById('toast');e.textContent=s;e.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove('show'),3500)}
+function setLoginMessage(message, isError=true){const el=document.getElementById('loginMessage');el.style.color=isError?'#b42318':'#067647';el.textContent=message||''}
+function setBusy(b){const btn=document.getElementById('loginSubmit');btn.disabled=b;btn.textContent=b?'Memeriksa akses…':'Masuk'}
+function showLogin(message=''){document.getElementById('loginGate').style.display='flex';document.getElementById('logoutBtn').style.display='none';document.getElementById('signedInEmail').textContent='';document.getElementById('adminIdentity').textContent='Login diperlukan';if(message)setLoginMessage(message)}
+function showApp(user){document.getElementById('loginGate').style.display='none';document.getElementById('logoutBtn').style.display='inline-block';document.getElementById('signedInEmail').textContent=user.email||'';document.getElementById('adminIdentity').textContent=user.email||'Platform Admin';document.getElementById('connectionBadge').textContent='SUPABASE LIVE'}
+async function login(e){
+ e.preventDefault();setLoginMessage('');setBusy(true);
+ const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;
+ try{
+  const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error)throw error;
+  const {data:isAdmin,error:adminError}=await supabaseClient.rpc('is_platform_admin');
+  if(adminError)throw new Error('Login berhasil, tetapi pemeriksaan Platform Admin gagal. Pastikan fungsi is_platform_admin() tersedia dan bisa dipanggil oleh authenticated.');
+  if(isAdmin!==true){await supabaseClient.auth.signOut();throw new Error('Akun ini belum terdaftar sebagai Platform Admin. Tambahkan user_id akun ke public.platform_admins oleh administrator database.')}
+  currentUser=authData.user;showApp(currentUser);await refreshAll();
+ }catch(err){setLoginMessage(err.message||'Login gagal. Periksa koneksi dan kredensial.');}
+ finally{setBusy(false)}
+}
+async function logout(){await supabaseClient.auth.signOut();currentUser=null;data=[];showLogin('Anda sudah keluar.')}
+async function ensurePlatformAdmin(user){
+ const {data:isAdmin,error}=await supabaseClient.rpc('is_platform_admin');
+ if(error)throw new Error('Gagal memeriksa hak admin: '+error.message);
+ if(isAdmin!==true)throw new Error('Akun ini bukan Platform Admin aktif.');
+ currentUser=user;showApp(user);
+}
+async function refreshAll(){
+ try{
+  const [tenantRes,settingsRes,subRes,planRes,memberRes]=await Promise.all([
+   supabaseClient.from('tenants').select('id,name,slug,status,created_at,updated_at').order('created_at',{ascending:false}),
+   supabaseClient.from('tenant_settings').select('tenant_id,business_name,app_name,brand_color,owner_name,logo_path,address,phone,whatsapp,email,bank_name,bank_account_number,bank_account_owner,invoice_prefix,work_order_prefix,currency_code,timezone,document_terms'),
+   supabaseClient.from('tenant_subscriptions').select('id,tenant_id,plan_id,status,starts_at,ends_at,created_at').order('created_at',{ascending:false}),
+   supabaseClient.from('subscription_plans').select('id,code,name,description,price_monthly,price_yearly,max_users,max_orders_per_month,active').order('price_monthly'),
+   supabaseClient.from('tenant_memberships').select('tenant_id,user_id,role,active').eq('role','owner').eq('active',true)
+  ]);
+  for(const r of [tenantRes,settingsRes,subRes,planRes,memberRes])if(r.error)throw r.error;
+  plans=planRes.data||[];
+  const planSelect=document.getElementById('newPlan');if(planSelect){const prior=planSelect.value;planSelect.innerHTML=plans.filter(p=>p.active).map(p=>`<option>${esc(p.name)}</option>`).join('');if([...planSelect.options].some(o=>o.value===prior))planSelect.value=prior;}
+  const settingsById=Object.fromEntries((settingsRes.data||[]).map(x=>[x.tenant_id,x]));
+  const subByTenant={};for(const s of (subRes.data||[])){if(!subByTenant[s.tenant_id])subByTenant[s.tenant_id]=s}
+  const planById=Object.fromEntries(plans.map(p=>[p.id,p]));
+  const ownerByTenant={};for(const m of(memberRes.data||[])){if(!ownerByTenant[m.tenant_id])ownerByTenant[m.tenant_id]=m.user_id}
+  data=(tenantRes.data||[]).map(t=>{
+   const s=settingsById[t.id]||{},sub=subByTenant[t.id]||{},plan=planById[sub.plan_id]||{};
+   return {id:t.id,name:t.name,slug:t.slug,status:statusLabel(t.status),dbStatus:t.status,owner:s.owner_name||ownerByTenant[t.id]||'Belum ada Owner',email:s.email||'Email belum disetel',plan:plan.name||'Belum berlangganan',planId:plan.id||'',subscriptionStatus:sub.status||'',appname:s.app_name||s.business_name||t.name,bizname:s.business_name||t.name,address:s.address||'',phone:s.phone||'',wa:s.whatsapp||'',emailSetting:s.email||'',bankowner:s.bank_account_owner||'',bank:s.bank_name||'',banknum:s.bank_account_number||'',invoice:s.invoice_prefix||'INV',spk:s.work_order_prefix||'SPK',color:s.brand_color||'#2563eb',logo:s.logo_path||'',currency:s.currency_code||'IDR',timezone:s.timezone||'Asia/Jakarta'}
+  });
+  logs=[['Baru saja',currentUser?.email||'Platform Admin','Memuat data dari Supabase','Dashboard'],...data.slice(0,3).map(t=>[new Date().toLocaleString('id-ID'),currentUser?.email||'Platform Admin','Membaca tenant',t.name])];
+  renderTenants();renderActivity();renderAudit();setupTenantSelect();renderPlans();
+  if(data.length){if(!data.some(t=>t.id===document.getElementById('ctenant').value))document.getElementById('ctenant').value=data[0].id;loadTenant()}
+  else {document.getElementById('ctenant').innerHTML='';clearCustomizer()}
+ }catch(err){toast('Gagal memuat data Supabase: '+(err.message||err));console.error(err)}
+}
+function clearCustomizer(){['appname','bizname','slug','address','wa','bankowner','bank','banknum','invoice','spk'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});preview()}
+function renderTenants(){
+ const q=(document.getElementById('search')?.value||'').toLowerCase(),f=(document.getElementById('filter')?.value||'');
+ const a=data.filter(t=>(!q||[t.name,t.slug,t.email,t.owner].join(' ').toLowerCase().includes(q))&&(!f||t.status===f));
+ document.getElementById('count').textContent=a.length+' tenant ditampilkan';
+ document.getElementById('tenants').innerHTML=a.map(t=>`<tr><td><b>${esc(t.name)}</b><div style="color:var(--muted)">${esc(t.slug)} · ${esc(t.id)}</div></td><td>${esc(t.owner)}<div style="color:var(--muted)">Email usaha: ${esc(t.email)}</div></td><td>${esc(t.plan)}</td><td>${pill(t.status)}</td><td><button class="link" onclick="editTenant('${t.id}')">Kelola →</button></td></tr>`).join('')||'<tr><td colspan="5" style="padding:22px;text-align:center;color:var(--muted)">Belum ada tenant atau data tidak dapat diakses.</td></tr>';
+ document.getElementById('total').textContent=data.length;
+ document.getElementById('active').textContent=data.filter(t=>t.dbStatus==='active').length;
+ document.getElementById('trial').textContent=data.filter(t=>t.subscriptionStatus==='trial').length;
+ document.getElementById('paused').textContent=data.filter(t=>['suspended','pending'].includes(t.dbStatus)).length;
+ document.getElementById('recent').innerHTML=data.slice(0,6).map(t=>`<tr><td><b>${esc(t.name)}</b><div style="color:var(--muted)">${esc(t.slug)}</div></td><td>${esc(t.plan)}</td><td>${pill(t.status)}</td><td><button class="link" onclick="editTenant('${t.id}')">Detail</button></td></tr>`).join('')||'<tr><td colspan="4" style="padding:20px;text-align:center">Belum ada tenant.</td></tr>';
+}
+function renderActivity(){document.getElementById('activity').innerHTML=logs.slice(0,4).map(x=>`<div class="act"><b>${esc(x[2])}</b> · ${esc(x[3])}<small>${esc(x[0])} · ${esc(x[1])}</small></div>`).join('')}
+function renderAudit(){let q=(document.getElementById('auditsearch')?.value||'').toLowerCase();document.getElementById('audittable').innerHTML=logs.filter(x=>x.join(' ').toLowerCase().includes(q)).map(x=>`<tr>${x.map(v=>`<td>${esc(v)}</td>`).join('')}<td>${pill('Aktif')}</td></tr>`).join('')}
+function renderPlans(){const el=document.getElementById('plansGrid');if(!el)return;el.innerHTML=plans.map(p=>`<div class="card" style="padding:18px"><span class="env">${esc(p.code.toUpperCase())}</span><b style="display:block;margin-top:10px">${esc(p.name)}</b><p>${esc(p.description||'Paket layanan Onpoint.')}</p><p>Pengguna: ${p.max_users??'Tanpa batas'} · Pesanan/bulan: ${p.max_orders_per_month??'Tanpa batas'}</p><p><b>Rp ${Number(p.price_monthly||0).toLocaleString('id-ID')}</b> / bulan</p><small style="color:var(--muted)">${p.active?'Aktif':'Nonaktif'}</small></div>`).join('')||'<div class="card" style="padding:18px">Belum ada paket aktif yang dapat dibaca.</div>'}
+function go(p){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));document.getElementById('crumb').textContent=({dashboard:'Dashboard',tenants:'Customer / Tenant',customize:'App Customizer',plans:'Paket & Langganan',access:'User & Akses',audit:'Audit Aktivitas',settings:'Pengaturan Platform'})[p];if(p==='tenants')renderTenants();if(p==='customize')loadTenant();if(p==='audit')renderAudit();window.scrollTo(0,0)}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));
+function setupTenantSelect(){document.getElementById('ctenant').innerHTML=data.map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('')}
+function loadTenant(){
+ const t=data.find(x=>x.id===document.getElementById('ctenant').value);if(!t){clearCustomizer();return}
+ [['appname','appname'],['bizname','bizname'],['slug','slug'],['address','address'],['wa','wa'],['bankowner','bankowner'],['bank','bank'],['banknum','banknum'],['invoice','invoice'],['spk','spk'],['color','color']].forEach(([id,k])=>document.getElementById(id).value=t[k]||'');
+ preview()
+}
+function preview(){let b=document.getElementById('bizname').value||'Usaha';document.getElementById('previewname').textContent=document.getElementById('appname').value||'Nama aplikasi';document.getElementById('previewbiz').textContent=b+' · Sistem Manajemen Produksi';document.getElementById('previewmark').textContent=b.charAt(0).toUpperCase();document.getElementById('previewmark').style.background=document.getElementById('color').value}
+['appname','bizname','color'].forEach(id=>document.getElementById(id).addEventListener('input',preview));
+async function saveTenant(){
+ const t=data.find(x=>x.id===document.getElementById('ctenant').value);if(!t){toast('Pilih tenant terlebih dahulu.');return}
+ const name=document.getElementById('bizname').value.trim()||t.name;
+ const slug=document.getElementById('slug').value.trim().toLowerCase();
+ if(!/^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/.test(slug)){toast('Slug minimal 3 karakter: huruf kecil, angka, dan tanda hubung.');return}
+ try{
+  const {error:profileError}=await supabaseClient.rpc('admin_update_tenant_profile',{p_tenant_id:t.id,p_name:name,p_slug:slug,p_status:t.dbStatus});
+  if(profileError)throw profileError;
+  const payload={tenant_id:t.id,app_name:document.getElementById('appname').value.trim()||name,brand_color:document.getElementById('color').value,business_name:name,address:document.getElementById('address').value.trim()||null,whatsapp:document.getElementById('wa').value.trim()||null,email:t.emailSetting||null,bank_account_owner:document.getElementById('bankowner').value.trim()||null,bank_name:document.getElementById('bank').value.trim()||null,bank_account_number:document.getElementById('banknum').value.trim()||null,invoice_prefix:document.getElementById('invoice').value.trim()||'INV',work_order_prefix:document.getElementById('spk').value.trim()||'SPK',updated_at:new Date().toISOString()};
+  const {error:settingsError}=await supabaseClient.from('tenant_settings').upsert(payload,{onConflict:'tenant_id'});
+  if(settingsError)throw settingsError;
+  await refreshAll();toast('Konfigurasi tenant berhasil disimpan ke Supabase.');
+ }catch(err){toast('Gagal menyimpan konfigurasi: '+(err.message||err));console.error(err)}
+}
+function editTenant(id){selectedTenantId=id;showTenantDetail(id)}
+function openCreateTenant(){document.getElementById('createForm').reset();document.getElementById('createModal').classList.add('open');setTimeout(()=>document.getElementById('newName').focus(),50)}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+async function createTenant(e){
+ e.preventDefault();
+ const name=document.getElementById('newName').value.trim(),owner=document.getElementById('newOwner').value.trim(),email=document.getElementById('newEmail').value.trim().toLowerCase();
+ const planName=document.getElementById('newPlan').value;
+ if(!name||!owner||!email){toast('Lengkapi nama usaha, pemilik, dan email.');return}
+ const plan=plans.find(p=>p.name.toLowerCase()===planName.toLowerCase());
+ if(!plan){toast('Paket belum tersedia di database. Muat ulang data atau periksa subscription_plans.');return}
+ const slug=name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60).replace(/-$/,'');
+ if(slug.length<3){toast('Nama usaha menghasilkan slug yang terlalu pendek.');return}
+ try{
+  const {data:tenantId,error}=await supabaseClient.rpc('admin_create_tenant_by_email',{p_name:name,p_slug:slug,p_owner_email:email,p_plan_id:plan.id,p_owner_name:owner,p_whatsapp:document.getElementById('newWa').value.trim()||null,p_subscription_status:document.getElementById('newStatus').value==='Aktif'?'active':'trial'});
+  if(error)throw error;
+  closeModal('createModal');await refreshAll();toast('Tenant berhasil dibuat. Akun Owner yang sudah terdaftar telah ditautkan.');showTenantDetail(tenantId);
+ }catch(err){toast('Gagal membuat tenant: '+(err.message||err));console.error(err)}
+}
+function showTenantDetail(id){
+ const t=data.find(x=>x.id===id);if(!t)return;selectedTenantId=id;
+ document.getElementById('detailTitle').textContent=t.name;
+ const fields=[['ID tenant',t.id],['Slug',t.slug],['Pemilik user ID',t.owner],['Email usaha / setting',t.email],['Paket',t.plan],['Status',t.status],['WhatsApp',t.wa||'Belum diisi'],['Nama aplikasi',t.appname||t.name]];
+ document.getElementById('detailGrid').innerHTML=fields.map(([k,v])=>`<div class="detailitem"><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join('');
+ document.getElementById('statusAction').textContent=t.dbStatus==='suspended'?'Aktifkan tenant':'Tangguhkan tenant';
+ document.getElementById('detailModal').classList.add('open')
+}
+async function toggleTenantStatus(){
+ const t=data.find(x=>x.id===selectedTenantId);if(!t)return;
+ const newStatus=t.dbStatus==='suspended'?'active':'suspended';
+ try{
+  const {error}=await supabaseClient.rpc('admin_update_tenant_profile',{p_tenant_id:t.id,p_name:t.name,p_slug:t.slug,p_status:newStatus});
+  if(error)throw error;
+  await refreshAll();showTenantDetail(t.id);toast('Status tenant berhasil diperbarui di Supabase.');
+ }catch(err){toast('Gagal mengubah status: '+(err.message||err));console.error(err)}
+}
+function customizeSelected(){const id=selectedTenantId;closeModal('detailModal');go('customize');document.getElementById('ctenant').value=id;loadTenant()}
+document.getElementById('loginForm').addEventListener('submit',login);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('createModal');closeModal('detailModal')}});
+(async function init(){
+ try{
+  const {data:{session},error}=await supabaseClient.auth.getSession();if(error)throw error;
+  if(session?.user){try{await ensurePlatformAdmin(session.user);await refreshAll()}catch(err){await supabaseClient.auth.signOut();showLogin(err.message)}}
+  else showLogin();
+ }catch(err){showLogin('Tidak dapat memulai sesi Supabase: '+(err.message||err))}
+})();
+</script></body></html>
